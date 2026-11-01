@@ -268,14 +268,16 @@ function Pricing() {
   );
 }
 
+type Field = "name" | "email" | "service" | "message";
+
 function Contact() {
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-    const v = Object.fromEntries(fd) as Record<string, string>;
-    const err: Record<string, string> = {};
+    const v = Object.fromEntries(fd) as Record<Field, string>;
+    const err: Partial<Record<Field, string>> = {};
     if (!v.name?.trim() || v.name.length > 100) err.name = "Please enter your name.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email ?? "")) err.email = "Please enter a valid email.";
     if (!v.service) err.service = "Please choose a service.";
