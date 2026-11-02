@@ -5,6 +5,22 @@ Object.defineProperty(window, "scrollTo", {
   value: () => {},
 });
 
+// jsdom has no IntersectionObserver; scroll-reveal hooks need one to exist.
+if (!("IntersectionObserver" in globalThis)) {
+  class IntersectionObserverStub {
+    readonly root = null;
+    readonly rootMargin = "";
+    readonly thresholds: ReadonlyArray<number> = [];
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+    takeRecords(): IntersectionObserverEntry[] {
+      return [];
+    }
+  }
+  globalThis.IntersectionObserver = IntersectionObserverStub as unknown as typeof IntersectionObserver;
+}
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (query: string) => ({
