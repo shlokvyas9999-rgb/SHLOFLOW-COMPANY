@@ -2,24 +2,28 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import {
   Bot, Globe, Workflow, Clapperboard, Megaphone, Zap, ArrowRight, Sparkles, Brain, Target,
-  Check, Menu, X, Mail, MessageCircle, Instagram, Linkedin, Twitter, Github,
+  Check, Menu, X, Mail, MessageCircle, Instagram, Linkedin, Twitter, Github, Phone, MapPin,
 } from "lucide-react";
 import projectsImg from "@/assets/projects.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "SHLOFLOW AI — AI-Powered Digital Agency" },
-      { name: "description", content: "SHLOFLOW AI builds intelligent chatbots, websites and automations that help businesses grow with artificial intelligence." },
+      { title: "SHLOFLOW AI — AI-Powered Digital Agency in Anand, Gujarat" },
+      { name: "description", content: "SHLOFLOW AI builds AI chatbots, voice agents, websites and business automations. Founded by Shlok Vyas in Anand, Gujarat, India." },
       { property: "og:title", content: "SHLOFLOW AI — Flow Beyond Limits" },
-      { property: "og:description", content: "Transform your business with AI chatbots, automation, websites and creative AI." },
+      { property: "og:description", content: "AI chatbots, voice agents, websites, videos and automations for your business — starting at ₹599." },
     ],
   }),
   component: Index,
 });
 
-const WHATSAPP = "https://wa.me/910000000000";
-const EMAIL = "hello@shloflow.ai";
+const EMAIL = "shlokvyas9999@gmail.com";
+const WHATSAPP = "https://wa.me/919171138891";
+const PHONE_TEL = "+919171138891";
+const PHONE = "+91 91711 38891";
+const LOCATION = "Anand, Gujarat, India";
+const FOUNDER = "Shlok Vyas";
 const nav = ["Home", "Services", "About", "Projects", "Pricing", "Contact"];
 
 function useReveal() {
@@ -146,6 +150,17 @@ const services = [
   { icon: Zap, t: "Smart Workflow Automation", d: "Connect your tools into seamless, self-running workflows." },
 ];
 
+const prices = [
+  { icon: Globe, t: "Business Website", p: "₹5,999", d: "A fast, modern website that makes your business look serious." },
+  { icon: Sparkles, t: "Premium Website", p: "₹9,999", d: "High-end design with advanced AI features built in." },
+  { icon: Bot, t: "AI Chatbot", p: "₹9,999", d: "Answers customers 24/7 and captures leads for you." },
+  { icon: MessageCircle, t: "AI Voice Agent", p: "₹12,999", d: "A voice assistant that handles your calls like a pro." },
+  { icon: Workflow, t: "Business Automations", p: "₹9,999", d: "Repetitive work removed from your team, permanently." },
+  { icon: Clapperboard, t: "AI Videos Creation", p: "₹1,999", d: "Scroll-stopping videos produced with AI in hours, not weeks." },
+  { icon: Zap, t: "AI Image Creations", p: "₹599", d: "Custom images for posts, ads, menus and branding." },
+  { icon: Megaphone, t: "Social Media Automation", p: "₹3,999", d: "Content scheduled and posted on autopilot." },
+];
+
 function Services() {
   return (
     <section id="services" className="relative py-32">
@@ -192,6 +207,14 @@ function About() {
           <p className="mt-6 text-muted-foreground">
             SHLOFLOW AI blends creativity, technology and artificial intelligence to design smarter business solutions. From your first chatbot to fully automated operations, we turn complex AI into simple tools that save time, cut costs and unlock growth.
           </p>
+          <div className="glass card-lift mt-8 flex items-center gap-4 rounded-2xl p-5">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-brand font-display text-lg font-bold">SV</span>
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-neon">Founder</p>
+              <h3 className="font-semibold">{FOUNDER}</h3>
+              <p className="text-sm text-muted-foreground">Building SHLOFLOW AI from {LOCATION}.</p>
+            </div>
+          </div>
           <div className="mt-10 space-y-4">
             {values.map(({ icon: Icon, t, d }) => (
               <div key={t} className="glass card-lift flex items-center gap-4 rounded-2xl p-5">
@@ -239,23 +262,32 @@ function Projects() {
 }
 
 const plans = [
-  { n: "Starter", p: "$499", d: "For small businesses starting with AI.", f: ["1 AI chatbot", "Basic website integration", "Email support", "1 revision round"] },
-  { n: "Professional", p: "$1,499", d: "For growing teams ready to scale.", f: ["Advanced AI chatbot", "AI-powered website", "3 workflow automations", "Priority support", "Monthly reports"], hot: true },
-  { n: "Enterprise", p: "Custom", d: "Tailored AI for large organisations.", f: ["Unlimited automations", "Custom AI solutions", "Dedicated manager", "24/7 support", "SLA & security review"] },
+  { n: "Starter", p: "₹10,999", d: "For small businesses taking their first step into AI.", f: ["Business website", "1 AI chatbot", "1 basic automation", "Email support", "1 revision round"] },
+  { n: "Professional", p: "₹14,999", d: "For growing teams ready to scale with AI.", f: ["Premium website", "AI chatbot + voice agent", "3 business automations", "Social media automation", "Priority support"], hot: true },
+  { n: "Enterprise", p: "₹64,994", d: "Tailored AI for large organisations.", f: ["Everything in Professional", "Custom AI solutions", "Unlimited automations", "Dedicated manager", "24/7 support"] },
 ];
 
 function Pricing() {
   return (
     <section id="pricing" className="py-32">
       <div className="mx-auto max-w-7xl px-6">
-        <SectionHead tag="Pricing" title={<>Simple, <span className="text-gradient">transparent</span> plans</>} sub="Choose a package or contact us for a custom quote." />
+        <SectionHead tag="Pricing" title={<>Simple, <span className="text-gradient">transparent</span> pricing</>} sub="Pick exactly what you need — or choose a plan below." />
+        <div className="mb-20 grid gap-4 md:grid-cols-2">
+          {prices.map(({ icon: Icon, t, d, p }, i) => (
+            <div key={t} className="reveal glass card-lift flex items-center gap-5 rounded-2xl p-6" style={{ transitionDelay: `${i * 60}ms` }}>
+              <Icon className="h-10 w-10 shrink-0 rounded-xl bg-gradient-brand p-2.5" />
+              <div className="min-w-0 flex-1"><h3 className="font-semibold">{t}</h3><p className="text-sm leading-relaxed text-muted-foreground">{d}</p></div>
+              <p className="font-display text-2xl font-bold text-gradient">{p}</p>
+            </div>
+          ))}
+        </div>
         <div className="grid items-stretch gap-6 lg:grid-cols-3">
           {plans.map((pl, i) => (
             <div key={pl.n} className={`reveal card-lift relative flex flex-col rounded-3xl p-8 ${pl.hot ? "glass glow border-primary/50" : "glass"}`} style={{ transitionDelay: `${i * 100}ms` }}>
               {pl.hot && <span className="btn-glow absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs">Most popular</span>}
               <h3 className="text-xl font-semibold">{pl.n}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{pl.d}</p>
-              <p className="mt-6 font-display text-5xl font-bold">{pl.p}{pl.p !== "Custom" && <span className="text-base font-normal text-muted-foreground"> /project</span>}</p>
+              <p className="mt-6 font-display text-5xl font-bold">{pl.p}<span className="text-base font-normal text-muted-foreground"> /project</span></p>
               <ul className="mt-8 flex-1 space-y-3">
                 {pl.f.map((f) => <li key={f} className="flex items-center gap-3 text-sm"><Check className="h-4 w-4 text-neon" />{f}</li>)}
               </ul>
@@ -301,8 +333,10 @@ function Contact() {
           <h2 className="mt-4 text-4xl font-bold md:text-5xl">Let's Build Something <span className="text-gradient">Intelligent.</span></h2>
           <p className="mt-6 text-muted-foreground">Tell us about your idea and we'll get back within 24 hours.</p>
           <div className="mt-10 space-y-4">
-            <a href={WHATSAPP} target="_blank" rel="noreferrer" className="glass card-lift flex items-center gap-4 rounded-2xl p-5"><MessageCircle className="h-10 w-10 rounded-xl bg-gradient-brand p-2.5" /><div><p className="font-medium">WhatsApp</p><p className="text-sm text-muted-foreground">Chat with us instantly</p></div></a>
+            <a href={WHATSAPP} target="_blank" rel="noreferrer" className="glass card-lift flex items-center gap-4 rounded-2xl p-5"><MessageCircle className="h-10 w-10 rounded-xl bg-gradient-brand p-2.5" /><div><p className="font-medium">WhatsApp</p><p className="text-sm text-muted-foreground">{PHONE} · Chat with us instantly</p></div></a>
+            <a href={`tel:${PHONE_TEL}`} className="glass card-lift flex items-center gap-4 rounded-2xl p-5"><Phone className="h-10 w-10 rounded-xl bg-gradient-brand p-2.5" /><div><p className="font-medium">Call us</p><p className="text-sm text-muted-foreground">{PHONE}</p></div></a>
             <a href={`mailto:${EMAIL}`} className="glass card-lift flex items-center gap-4 rounded-2xl p-5"><Mail className="h-10 w-10 rounded-xl bg-gradient-brand p-2.5" /><div><p className="font-medium">Email</p><p className="text-sm text-muted-foreground">{EMAIL}</p></div></a>
+            <div className="glass card-lift flex items-center gap-4 rounded-2xl p-5"><MapPin className="h-10 w-10 rounded-xl bg-gradient-brand p-2.5" /><div><p className="font-medium">Location</p><p className="text-sm text-muted-foreground">{LOCATION}</p></div></div>
           </div>
         </div>
         <form onSubmit={onSubmit} noValidate className="reveal glass space-y-5 rounded-3xl p-8 lg:col-span-3">
@@ -322,7 +356,7 @@ function Contact() {
               <div>
                 <select name="service" defaultValue="" className={field}>
                   <option value="" disabled>Select a service</option>
-                  {services.map((s) => <option key={s.t}>{s.t}</option>)}
+                  {prices.map((s) => <option key={s.t}>{s.t}</option>)}
                 </select>
                 {errors.service && <p className="mt-1 text-xs text-destructive">{errors.service}</p>}
               </div>
@@ -350,9 +384,9 @@ function Footer() {
           </div>
         </div>
         <div><h4 className="font-semibold">Quick links</h4><ul className="mt-4 space-y-2 text-sm text-muted-foreground">{nav.map((n) => <li key={n}><a href={`#${n.toLowerCase()}`} className="hover:text-foreground">{n}</a></li>)}</ul></div>
-        <div><h4 className="font-semibold">Contact</h4><ul className="mt-4 space-y-2 text-sm text-muted-foreground"><li>{EMAIL}</li><li><a href={WHATSAPP} target="_blank" rel="noreferrer" className="hover:text-foreground">WhatsApp</a></li><li>Worldwide · Remote</li></ul></div>
+        <div><h4 className="font-semibold">Contact</h4><ul className="mt-4 space-y-2 text-sm text-muted-foreground"><li><a href={`mailto:${EMAIL}`} className="hover:text-foreground">{EMAIL}</a></li><li><a href={`tel:${PHONE_TEL}`} className="hover:text-foreground">{PHONE}</a></li><li><a href={WHATSAPP} target="_blank" rel="noreferrer" className="hover:text-foreground">WhatsApp</a></li><li>{LOCATION}</li></ul></div>
       </div>
-      <p className="mt-12 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} SHLOFLOW AI. All rights reserved.</p>
+      <p className="mt-12 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} SHLOFLOW AI · Founded by {FOUNDER} · {LOCATION}. All rights reserved.</p>
     </footer>
   );
 }
