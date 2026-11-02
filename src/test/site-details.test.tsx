@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { Route } from "@/routes/index";
 
-const Index = Route.component as unknown as () => React.ReactElement;
+const Index = Route.options.component as unknown as () => React.ReactElement;
 
 describe("SHLOFLOW AI business details", () => {
   const { container } = render(<Index />);
