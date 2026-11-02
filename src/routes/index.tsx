@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import {
   Bot, Globe, Workflow, Clapperboard, Megaphone, Zap, ArrowRight, Sparkles, Brain, Target,
-  Check, Menu, X, Mail, MessageCircle, Instagram, Linkedin, Twitter, Github,
+  Check, Menu, X, Mail, MessageCircle, Instagram, Linkedin, Twitter, Github, Phone, MapPin,
 } from "lucide-react";
 import projectsImg from "@/assets/projects.jpg";
 
@@ -18,8 +18,12 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const WHATSAPP = "https://wa.me/910000000000";
-const EMAIL = "hello@shloflow.ai";
+const EMAIL = "shlokvyas9999@gmail.com";
+const WHATSAPP = "https://wa.me/919171138891";
+const PHONE_TEL = "+919171138891";
+const PHONE = "+91 91711 38891";
+const LOCATION = "Anand, Gujarat, India";
+const FOUNDER = "Shlok Vyas";
 const nav = ["Home", "Services", "About", "Projects", "Pricing", "Contact"];
 
 function useReveal() {
@@ -146,6 +150,17 @@ const services = [
   { icon: Zap, t: "Smart Workflow Automation", d: "Connect your tools into seamless, self-running workflows." },
 ];
 
+const prices = [
+  { icon: Globe, t: "Business Website", p: "₹5,999", d: "A fast, modern website that makes your business look serious." },
+  { icon: Sparkles, t: "Premium Website", p: "₹9,999", d: "High-end design with advanced AI features built in." },
+  { icon: Bot, t: "AI Chatbot", p: "₹9,999", d: "Answers customers 24/7 and captures leads for you." },
+  { icon: MessageCircle, t: "AI Voice Agent", p: "₹12,999", d: "A voice assistant that handles your calls like a pro." },
+  { icon: Workflow, t: "Business Automations", p: "₹9,999", d: "Repetitive work removed from your team, permanently." },
+  { icon: Clapperboard, t: "AI Videos Creation", p: "₹1,999", d: "Scroll-stopping videos produced with AI in hours, not weeks." },
+  { icon: Zap, t: "AI Image Creations", p: "₹599", d: "Custom images for posts, ads, menus and branding." },
+  { icon: Megaphone, t: "Social Media Automation", p: "₹3,999", d: "Content scheduled and posted on autopilot." },
+];
+
 function Services() {
   return (
     <section id="services" className="relative py-32">
@@ -239,23 +254,32 @@ function Projects() {
 }
 
 const plans = [
-  { n: "Starter", p: "$499", d: "For small businesses starting with AI.", f: ["1 AI chatbot", "Basic website integration", "Email support", "1 revision round"] },
-  { n: "Professional", p: "$1,499", d: "For growing teams ready to scale.", f: ["Advanced AI chatbot", "AI-powered website", "3 workflow automations", "Priority support", "Monthly reports"], hot: true },
-  { n: "Enterprise", p: "Custom", d: "Tailored AI for large organisations.", f: ["Unlimited automations", "Custom AI solutions", "Dedicated manager", "24/7 support", "SLA & security review"] },
+  { n: "Starter", p: "₹10,999", d: "For small businesses taking their first step into AI.", f: ["Business website", "1 AI chatbot", "1 basic automation", "Email support", "1 revision round"] },
+  { n: "Professional", p: "₹14,999", d: "For growing teams ready to scale with AI.", f: ["Premium website", "AI chatbot + voice agent", "3 business automations", "Social media automation", "Priority support"], hot: true },
+  { n: "Enterprise", p: "₹64,994", d: "Tailored AI for large organisations.", f: ["Everything in Professional", "Custom AI solutions", "Unlimited automations", "Dedicated manager", "24/7 support"] },
 ];
 
 function Pricing() {
   return (
     <section id="pricing" className="py-32">
       <div className="mx-auto max-w-7xl px-6">
-        <SectionHead tag="Pricing" title={<>Simple, <span className="text-gradient">transparent</span> plans</>} sub="Choose a package or contact us for a custom quote." />
+        <SectionHead tag="Pricing" title={<>Simple, <span className="text-gradient">transparent</span> pricing</>} sub="Pick exactly what you need — or choose a plan below." />
+        <div className="mb-20 grid gap-4 md:grid-cols-2">
+          {prices.map(({ icon: Icon, t, d, p }, i) => (
+            <div key={t} className="reveal glass card-lift flex items-center gap-5 rounded-2xl p-6" style={{ transitionDelay: `${i * 60}ms` }}>
+              <Icon className="h-10 w-10 shrink-0 rounded-xl bg-gradient-brand p-2.5" />
+              <div className="min-w-0 flex-1"><h3 className="font-semibold">{t}</h3><p className="text-sm leading-relaxed text-muted-foreground">{d}</p></div>
+              <p className="font-display text-2xl font-bold text-gradient">{p}</p>
+            </div>
+          ))}
+        </div>
         <div className="grid items-stretch gap-6 lg:grid-cols-3">
           {plans.map((pl, i) => (
             <div key={pl.n} className={`reveal card-lift relative flex flex-col rounded-3xl p-8 ${pl.hot ? "glass glow border-primary/50" : "glass"}`} style={{ transitionDelay: `${i * 100}ms` }}>
               {pl.hot && <span className="btn-glow absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs">Most popular</span>}
               <h3 className="text-xl font-semibold">{pl.n}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{pl.d}</p>
-              <p className="mt-6 font-display text-5xl font-bold">{pl.p}{pl.p !== "Custom" && <span className="text-base font-normal text-muted-foreground"> /project</span>}</p>
+              <p className="mt-6 font-display text-5xl font-bold">{pl.p}<span className="text-base font-normal text-muted-foreground"> /project</span></p>
               <ul className="mt-8 flex-1 space-y-3">
                 {pl.f.map((f) => <li key={f} className="flex items-center gap-3 text-sm"><Check className="h-4 w-4 text-neon" />{f}</li>)}
               </ul>
