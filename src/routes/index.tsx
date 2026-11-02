@@ -9,10 +9,10 @@ import projectsImg from "@/assets/projects.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "SHLOFLOW AI — AI-Powered Digital Agency" },
-      { name: "description", content: "SHLOFLOW AI builds intelligent chatbots, websites and automations that help businesses grow with artificial intelligence." },
+      { title: "SHLOFLOW AI — AI-Powered Digital Agency in Anand, Gujarat" },
+      { name: "description", content: "SHLOFLOW AI builds AI chatbots, voice agents, websites and business automations. Founded by Shlok Vyas in Anand, Gujarat, India." },
       { property: "og:title", content: "SHLOFLOW AI — Flow Beyond Limits" },
-      { property: "og:description", content: "Transform your business with AI chatbots, automation, websites and creative AI." },
+      { property: "og:description", content: "AI chatbots, voice agents, websites, videos and automations for your business — starting at ₹599." },
     ],
   }),
   component: Index,
@@ -207,6 +207,14 @@ function About() {
           <p className="mt-6 text-muted-foreground">
             SHLOFLOW AI blends creativity, technology and artificial intelligence to design smarter business solutions. From your first chatbot to fully automated operations, we turn complex AI into simple tools that save time, cut costs and unlock growth.
           </p>
+          <div className="glass card-lift mt-8 flex items-center gap-4 rounded-2xl p-5">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-brand font-display text-lg font-bold">SV</span>
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-neon">Founder</p>
+              <h3 className="font-semibold">{FOUNDER}</h3>
+              <p className="text-sm text-muted-foreground">Building SHLOFLOW AI from {LOCATION}.</p>
+            </div>
+          </div>
           <div className="mt-10 space-y-4">
             {values.map(({ icon: Icon, t, d }) => (
               <div key={t} className="glass card-lift flex items-center gap-4 rounded-2xl p-5">
@@ -325,8 +333,10 @@ function Contact() {
           <h2 className="mt-4 text-4xl font-bold md:text-5xl">Let's Build Something <span className="text-gradient">Intelligent.</span></h2>
           <p className="mt-6 text-muted-foreground">Tell us about your idea and we'll get back within 24 hours.</p>
           <div className="mt-10 space-y-4">
-            <a href={WHATSAPP} target="_blank" rel="noreferrer" className="glass card-lift flex items-center gap-4 rounded-2xl p-5"><MessageCircle className="h-10 w-10 rounded-xl bg-gradient-brand p-2.5" /><div><p className="font-medium">WhatsApp</p><p className="text-sm text-muted-foreground">Chat with us instantly</p></div></a>
+            <a href={WHATSAPP} target="_blank" rel="noreferrer" className="glass card-lift flex items-center gap-4 rounded-2xl p-5"><MessageCircle className="h-10 w-10 rounded-xl bg-gradient-brand p-2.5" /><div><p className="font-medium">WhatsApp</p><p className="text-sm text-muted-foreground">{PHONE} · Chat with us instantly</p></div></a>
+            <a href={`tel:${PHONE_TEL}`} className="glass card-lift flex items-center gap-4 rounded-2xl p-5"><Phone className="h-10 w-10 rounded-xl bg-gradient-brand p-2.5" /><div><p className="font-medium">Call us</p><p className="text-sm text-muted-foreground">{PHONE}</p></div></a>
             <a href={`mailto:${EMAIL}`} className="glass card-lift flex items-center gap-4 rounded-2xl p-5"><Mail className="h-10 w-10 rounded-xl bg-gradient-brand p-2.5" /><div><p className="font-medium">Email</p><p className="text-sm text-muted-foreground">{EMAIL}</p></div></a>
+            <div className="glass card-lift flex items-center gap-4 rounded-2xl p-5"><MapPin className="h-10 w-10 rounded-xl bg-gradient-brand p-2.5" /><div><p className="font-medium">Location</p><p className="text-sm text-muted-foreground">{LOCATION}</p></div></div>
           </div>
         </div>
         <form onSubmit={onSubmit} noValidate className="reveal glass space-y-5 rounded-3xl p-8 lg:col-span-3">
@@ -346,7 +356,7 @@ function Contact() {
               <div>
                 <select name="service" defaultValue="" className={field}>
                   <option value="" disabled>Select a service</option>
-                  {services.map((s) => <option key={s.t}>{s.t}</option>)}
+                  {prices.map((s) => <option key={s.t}>{s.t}</option>)}
                 </select>
                 {errors.service && <p className="mt-1 text-xs text-destructive">{errors.service}</p>}
               </div>
@@ -374,9 +384,9 @@ function Footer() {
           </div>
         </div>
         <div><h4 className="font-semibold">Quick links</h4><ul className="mt-4 space-y-2 text-sm text-muted-foreground">{nav.map((n) => <li key={n}><a href={`#${n.toLowerCase()}`} className="hover:text-foreground">{n}</a></li>)}</ul></div>
-        <div><h4 className="font-semibold">Contact</h4><ul className="mt-4 space-y-2 text-sm text-muted-foreground"><li>{EMAIL}</li><li><a href={WHATSAPP} target="_blank" rel="noreferrer" className="hover:text-foreground">WhatsApp</a></li><li>Worldwide · Remote</li></ul></div>
+        <div><h4 className="font-semibold">Contact</h4><ul className="mt-4 space-y-2 text-sm text-muted-foreground"><li><a href={`mailto:${EMAIL}`} className="hover:text-foreground">{EMAIL}</a></li><li><a href={`tel:${PHONE_TEL}`} className="hover:text-foreground">{PHONE}</a></li><li><a href={WHATSAPP} target="_blank" rel="noreferrer" className="hover:text-foreground">WhatsApp</a></li><li>{LOCATION}</li></ul></div>
       </div>
-      <p className="mt-12 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} SHLOFLOW AI. All rights reserved.</p>
+      <p className="mt-12 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} SHLOFLOW AI · Founded by {FOUNDER} · {LOCATION}. All rights reserved.</p>
     </footer>
   );
 }
