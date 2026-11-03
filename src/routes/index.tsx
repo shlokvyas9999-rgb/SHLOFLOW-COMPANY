@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { submitContact } from "@/lib/contact.functions";
 import {
   Bot, Globe, Workflow, Clapperboard, Megaphone, Zap, ArrowRight, Sparkles, Brain, Target,
   Check, Menu, X, Mail, MessageCircle, Instagram, Linkedin, Twitter, Github, Phone, MapPin,
@@ -300,29 +302,47 @@ function Pricing() {
   );
 }
 
-type Field = "name" | "email" | "service" | "message";
+type Field = "name" | "email" | "phone" | "service" | "message" | "files" | "form";
+
+const toBase64 = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(",")[1] ?? "");
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(file);
+  });
 
 function Contact() {
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = useServerFn(submitContact);
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const v = Object.fromEntries(fd) as Record<Field, string>;
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const v = Object.fromEntries(fd) as Record<string, string>;
+    const files = (fd.getAll("files") as File[]).filter((f) => f && f.size > 0);
     const err: Partial<Record<Field, string>> = {};
     if (!v.name?.trim() || v.name.length > 100) err.name = "Please enter your name.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email ?? "")) err.email = "Please enter a valid email.";
+    if (v.phone && !/^[0-9+\-\s()]{6,30}$/.test(v.phone)) err.phone = "Please enter a valid phone number.";
     if (!v.service) err.service = "Please choose a service.";
     if (!v.message || v.message.trim().length < 10) err.message = "Tell us a bit more (10+ characters).";
+    if (files.length > 3) err.files = "You can attach up to 3 files.";
+    else if (files.some((f) => f.size > 4 * 1024 * 1024)) err.files = "Each file must be under 4 MB.";
     setErrors(err);
     if (Object.keys(err).length) return;
     setStatus("sending");
-    const form = e.currentTarget;
-    setTimeout(() => {
-      const body = encodeURIComponent(`Name: ${v.name}\nEmail: ${v.email}\nService: ${v.service}\n\n${v.message}`);
-      window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("New project: " + v.service)}&body=${body}`;
-      setStatus("done"); form.reset();
-    }, 800);
+    try {
+      const encoded = await Promise.all(files.map(async (f) => ({ name: f.name, type: f.type, base64: await toBase64(f) })));
+      await submit({ data: { name: v.name, email: v.email, phone: v.phone ?? "", service: v.service, message: v.message, files: encoded } });
+      form.reset();
+      setStatus("done");
+    } catch (error) {
+      console.error(error);
+      setErrors({ form: "Sorry, we couldn't send your message. Please try again or contact us on WhatsApp." });
+      setStatus("idle");
+    }
   };
   const field = "w-full rounded-xl border border-input bg-background/50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30";
   return (
@@ -344,7 +364,7 @@ function Contact() {
             <div className="py-16 text-center animate-in fade-in zoom-in-95">
               <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-gradient-brand glow"><Check className="h-8 w-8" /></div>
               <h3 className="mt-6 text-2xl font-semibold">Thank you!</h3>
-              <p className="mt-2 text-muted-foreground">Your message is ready in your email app — hit send and we'll reply within 24 hours.</p>
+              <p className="mt-2 text-muted-foreground">Your enquiry has been received — we'll reply within 24 hours.</p>
               <button type="button" onClick={() => setStatus("idle")} className="glass mt-6 rounded-full px-5 py-2 text-sm">Send another</button>
             </div>
           ) : (
@@ -353,6 +373,7 @@ function Contact() {
                 <div><input name="name" placeholder="Your name" maxLength={100} className={field} />{errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}</div>
                 <div><input name="email" type="email" placeholder="Email address" maxLength={255} className={field} />{errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}</div>
               </div>
+              <div><input name="phone" type="tel" placeholder="Phone number (optional)" maxLength={30} className={field} />{errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone}</p>}</div>
               <div>
                 <select name="service" defaultValue="" className={field}>
                   <option value="" disabled>Select a service</option>
@@ -361,6 +382,8 @@ function Contact() {
                 {errors.service && <p className="mt-1 text-xs text-destructive">{errors.service}</p>}
               </div>
               <div><textarea name="message" rows={5} maxLength={2000} placeholder="Describe your project" className={field} />{errors.message && <p className="mt-1 text-xs text-destructive">{errors.message}</p>}</div>
+              <div><input name="files" type="file" multiple accept="image/*,.pdf,.doc,.docx,.txt,.zip" className={`${field} file:mr-3 file:rounded-full file:border-0 file:bg-primary file:px-3 file:py-1 file:text-xs file:text-primary-foreground`} />{errors.files ? <p className="mt-1 text-xs text-destructive">{errors.files}</p> : <p className="mt-1 text-xs text-muted-foreground">Optional · up to 3 files, 4 MB each</p>}</div>
+              {errors.form && <p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{errors.form}</p>}
               <button disabled={status === "sending"} className="btn-glow w-full rounded-full py-3.5 font-medium disabled:opacity-70">
                 {status === "sending" ? <span className="inline-flex items-center gap-2"><span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" /> Sending…</span> : "Send Message"}
               </button>
