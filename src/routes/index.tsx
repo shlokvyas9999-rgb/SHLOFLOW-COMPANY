@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { submitContact } from "@/lib/contact.functions";
 import {
   Bot, Globe, Workflow, Clapperboard, Megaphone, Zap, ArrowRight, Sparkles, Brain, Target,
   Check, Menu, X, Mail, MessageCircle, Instagram, Linkedin, Twitter, Github, Phone, MapPin,
@@ -362,7 +364,7 @@ function Contact() {
             <div className="py-16 text-center animate-in fade-in zoom-in-95">
               <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-gradient-brand glow"><Check className="h-8 w-8" /></div>
               <h3 className="mt-6 text-2xl font-semibold">Thank you!</h3>
-              <p className="mt-2 text-muted-foreground">Your message is ready in your email app — hit send and we'll reply within 24 hours.</p>
+              <p className="mt-2 text-muted-foreground">Your enquiry has been received — we'll reply within 24 hours.</p>
               <button type="button" onClick={() => setStatus("idle")} className="glass mt-6 rounded-full px-5 py-2 text-sm">Send another</button>
             </div>
           ) : (
@@ -371,6 +373,7 @@ function Contact() {
                 <div><input name="name" placeholder="Your name" maxLength={100} className={field} />{errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}</div>
                 <div><input name="email" type="email" placeholder="Email address" maxLength={255} className={field} />{errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}</div>
               </div>
+              <div><input name="phone" type="tel" placeholder="Phone number (optional)" maxLength={30} className={field} />{errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone}</p>}</div>
               <div>
                 <select name="service" defaultValue="" className={field}>
                   <option value="" disabled>Select a service</option>
@@ -379,6 +382,8 @@ function Contact() {
                 {errors.service && <p className="mt-1 text-xs text-destructive">{errors.service}</p>}
               </div>
               <div><textarea name="message" rows={5} maxLength={2000} placeholder="Describe your project" className={field} />{errors.message && <p className="mt-1 text-xs text-destructive">{errors.message}</p>}</div>
+              <div><input name="files" type="file" multiple accept="image/*,.pdf,.doc,.docx,.txt,.zip" className={`${field} file:mr-3 file:rounded-full file:border-0 file:bg-primary file:px-3 file:py-1 file:text-xs file:text-primary-foreground`} />{errors.files ? <p className="mt-1 text-xs text-destructive">{errors.files}</p> : <p className="mt-1 text-xs text-muted-foreground">Optional · up to 3 files, 4 MB each</p>}</div>
+              {errors.form && <p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{errors.form}</p>}
               <button disabled={status === "sending"} className="btn-glow w-full rounded-full py-3.5 font-medium disabled:opacity-70">
                 {status === "sending" ? <span className="inline-flex items-center gap-2"><span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" /> Sending…</span> : "Send Message"}
               </button>
