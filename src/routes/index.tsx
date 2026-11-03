@@ -320,7 +320,7 @@ function Contact() {
     e.preventDefault();
     const form = e.currentTarget;
     const fd = new FormData(form);
-    const v = Object.fromEntries(fd) as Record<string, string>;
+    const v = Object.fromEntries(fd) as Record<"name" | "email" | "phone" | "service" | "message", string>;
     const files = (fd.getAll("files") as File[]).filter((f) => f && f.size > 0);
     const err: Partial<Record<Field, string>> = {};
     if (!v.name?.trim() || v.name.length > 100) err.name = "Please enter your name.";
