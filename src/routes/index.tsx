@@ -300,29 +300,47 @@ function Pricing() {
   );
 }
 
-type Field = "name" | "email" | "service" | "message";
+type Field = "name" | "email" | "phone" | "service" | "message" | "files" | "form";
+
+const toBase64 = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(",")[1] ?? "");
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(file);
+  });
 
 function Contact() {
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = useServerFn(submitContact);
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const v = Object.fromEntries(fd) as Record<Field, string>;
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const v = Object.fromEntries(fd) as Record<string, string>;
+    const files = (fd.getAll("files") as File[]).filter((f) => f && f.size > 0);
     const err: Partial<Record<Field, string>> = {};
     if (!v.name?.trim() || v.name.length > 100) err.name = "Please enter your name.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email ?? "")) err.email = "Please enter a valid email.";
+    if (v.phone && !/^[0-9+\-\s()]{6,30}$/.test(v.phone)) err.phone = "Please enter a valid phone number.";
     if (!v.service) err.service = "Please choose a service.";
     if (!v.message || v.message.trim().length < 10) err.message = "Tell us a bit more (10+ characters).";
+    if (files.length > 3) err.files = "You can attach up to 3 files.";
+    else if (files.some((f) => f.size > 4 * 1024 * 1024)) err.files = "Each file must be under 4 MB.";
     setErrors(err);
     if (Object.keys(err).length) return;
     setStatus("sending");
-    const form = e.currentTarget;
-    setTimeout(() => {
-      const body = encodeURIComponent(`Name: ${v.name}\nEmail: ${v.email}\nService: ${v.service}\n\n${v.message}`);
-      window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("New project: " + v.service)}&body=${body}`;
-      setStatus("done"); form.reset();
-    }, 800);
+    try {
+      const encoded = await Promise.all(files.map(async (f) => ({ name: f.name, type: f.type, base64: await toBase64(f) })));
+      await submit({ data: { name: v.name, email: v.email, phone: v.phone ?? "", service: v.service, message: v.message, files: encoded } });
+      form.reset();
+      setStatus("done");
+    } catch (error) {
+      console.error(error);
+      setErrors({ form: "Sorry, we couldn't send your message. Please try again or contact us on WhatsApp." });
+      setStatus("idle");
+    }
   };
   const field = "w-full rounded-xl border border-input bg-background/50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30";
   return (
