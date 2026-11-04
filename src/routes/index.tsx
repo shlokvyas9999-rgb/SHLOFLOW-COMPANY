@@ -8,13 +8,51 @@ import {
 } from "lucide-react";
 import projectsImg from "@/assets/projects.jpg";
 
+const SITE_URL = "https://shloflow-company.lovable.app";
+
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "SHLOFLOW AI — AI-Powered Digital Agency in Anand, Gujarat" },
       { name: "description", content: "SHLOFLOW AI builds AI chatbots, voice agents, websites and business automations. Founded by Shlok Vyas in Anand, Gujarat, India." },
       { property: "og:title", content: "SHLOFLOW AI — Flow Beyond Limits" },
       { property: "og:description", content: "AI chatbots, voice agents, websites, videos and automations for your business — starting at ₹599." },
+      { property: "og:url", content: SITE_URL },
+    ],
+    links: [{ rel: "canonical", href: SITE_URL }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ProfessionalService",
+          name: "SHLOFLOW AI",
+          description:
+            "AI-powered digital agency building chatbots, voice agents, websites, AI videos and business automations.",
+          url: SITE_URL,
+          email: "shlokvyas9999@gmail.com",
+          telephone: "+91 91711 38891",
+          founder: { "@type": "Person", name: "Shlok Vyas" },
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Anand",
+            addressRegion: "Gujarat",
+            addressCountry: "IN",
+          },
+          areaServed: "IN",
+          priceRange: "₹599 - ₹64,994",
+          knowsAbout: [
+            "AI chatbots",
+            "AI voice agents",
+            "Business websites",
+            "Business automations",
+            "AI video creation",
+            "AI image creation",
+            "Social media automation",
+          ],
+        }),
+      },
     ],
   }),
   component: Index,
