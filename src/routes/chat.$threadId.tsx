@@ -14,6 +14,7 @@ import botLogo from "@/assets/shlo-bot.png";
 const WHATSAPP = "https://wa.me/919171138891";
 
 export const Route = createFileRoute("/chat/$threadId")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Chat with Shlo — SHLOFLOW AI Assistant" },

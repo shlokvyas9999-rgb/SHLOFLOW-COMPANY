@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { createThread, loadThreads } from "@/lib/chat-store";
 
 export const Route = createFileRoute("/chat/")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Chat with Shlo — SHLOFLOW AI Assistant" },

@@ -36,7 +36,7 @@ Rules:
 - Stay on topic (SHLOFLOW AI and how AI can help their business).`;
 
 export async function handleChat(request: Request): Promise<Response> {
-  const apiKey = process.env.LOVABLE_API_KEY;
+  const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) return Response.json({ error: "Chat is not configured." }, { status: 500 });
 
   let messages: UIMessage[];
