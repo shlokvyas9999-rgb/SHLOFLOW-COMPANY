@@ -457,6 +457,9 @@ function Index() {
   return (
     <main>
       <Navbar /><Hero /><Services /><About /><Projects /><Pricing /><Contact /><Footer />
+      <Link to="/chat" aria-label="Chat with our AI assistant" className="btn-glow fixed bottom-5 right-5 z-50 inline-flex items-center gap-2 rounded-full px-5 py-3.5 text-sm font-medium">
+        <Bot className="h-5 w-5" /> Ask Shlo
+      </Link>
     </main>
   );
 }

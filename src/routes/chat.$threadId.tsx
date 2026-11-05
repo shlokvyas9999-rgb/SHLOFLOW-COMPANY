@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, MessageCircle, Plus, Trash2 } from "lucide-react";
 
 import { Conversation, ConversationContent, ConversationScrollButton } from "@/components/ai-elements/conversation";
@@ -39,7 +39,7 @@ function ChatPage() {
     setInitial(getThread(threadId)?.messages ?? []);
   }, [threadId]);
 
-  const refresh = () => setThreads(loadThreads());
+  const refresh = useCallback(() => setThreads(loadThreads()), []);
 
   const newChat = () => {
     const t = createThread();
