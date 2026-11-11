@@ -14,9 +14,9 @@ export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
   head: () => ({
     meta: [
-      { title: "SHLOFLOW AI — AI-Powered Digital Agency in Anand, Gujarat" },
+      { title: "SHLOFLOW AI" },
       { name: "description", content: "SHLOFLOW AI builds AI chatbots, voice agents, websites and business automations. Founded by Shlok Vyas in Anand, Gujarat, India." },
-      { property: "og:title", content: "SHLOFLOW AI — Flow Beyond Limits" },
+      { property: "og:title", content: "SHLOFLOW AI" },
       { property: "og:description", content: "AI chatbots, voice agents, websites, videos and automations for your business — starting at ₹599." },
       { property: "og:url", content: SITE_URL },
       { property: "og:site_name", content: "SHLOFLOW AI" },
