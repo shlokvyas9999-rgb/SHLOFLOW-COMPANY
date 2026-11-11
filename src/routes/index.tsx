@@ -31,7 +31,7 @@ export const Route = createFileRoute("/")({
           "@type": "WebSite",
           name: "SHLOFLOW AI",
           alternateName: ["SHLOFLOW", "Shloflow AI"],
-          url: `${SITE_URL}`,
+          url: `${SITE_URL}/`,
         }),
       },
       {
