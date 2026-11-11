@@ -19,9 +19,21 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "SHLOFLOW AI — Flow Beyond Limits" },
       { property: "og:description", content: "AI chatbots, voice agents, websites, videos and automations for your business — starting at ₹599." },
       { property: "og:url", content: SITE_URL },
+      { property: "og:site_name", content: "SHLOFLOW AI" },
+      { name: "application-name", content: "SHLOFLOW AI" },
     ],
     links: [{ rel: "canonical", href: SITE_URL }],
     scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "SHLOFLOW AI",
+          alternateName: ["SHLOFLOW", "Shloflow AI"],
+          url: `${SITE_URL}`,
+        }),
+      },
       {
         type: "application/ld+json",
         children: JSON.stringify({
